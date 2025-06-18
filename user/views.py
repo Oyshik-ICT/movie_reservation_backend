@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.exceptions import PermissionDenied
 from .models import CustomUser
 from .serializers import CustomUserSerializer, CustomAdminUserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -20,8 +21,7 @@ class UserViewset(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         qs = super().get_queryset()
-        if not user.is_staff:
-            qs = qs.filter(email=user.email)
+        qs = qs.filter(email=user.email)
 
         return qs
     
