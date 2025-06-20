@@ -41,3 +41,6 @@ class CustomAdminUserSerializer(BaseCustomSerializer):
             "password": {"write_only": True},
             "date_joined": {"read_only": True}
         }
+
+class ForgetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
