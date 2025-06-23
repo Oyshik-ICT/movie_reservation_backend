@@ -44,3 +44,16 @@ class CustomAdminUserSerializer(BaseCustomSerializer):
 
 class ForgetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
+
+class ResetPasswordSerializer(serializers.Serializer):
+    new_password = serializers.CharField(write_only=True, required=True)
+    confirm_password = serializers.CharField(write_only=True, required=True)
+
+    def validate(self, data):
+        new_pass = data.get("new_password")
+        confirm_pass = data.get("confirm_password")
+
+        if new_pass != confirm_pass:
+            raise serializers.ValidationError("new password and confirmed password aren't match")
+        
+        return data
