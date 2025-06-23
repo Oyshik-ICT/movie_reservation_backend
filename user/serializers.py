@@ -1,8 +1,18 @@
 from rest_framework import serializers
 from .models import CustomUser
 from django.contrib.auth.hashers import make_password
+import re
 
 class BaseCustomSerializer(serializers.ModelSerializer):
+    def validate_password(self, value):
+        if len(value) <= 6:
+            raise serializers.ValidationError("Password length must be greater then 5")
+
+        if not re.search(r'[A-Za-z]', value) or not re.search(r'[0-9]', value) or not re.search(r'[^A-Za-z0-9]', value):
+            raise serializers.ValidationError("Password must contains letter, digit and special character")
+
+        return value
+
     def create(self, validated_data):
         return CustomUser.objects.create_user(**validated_data)
     
@@ -55,5 +65,11 @@ class ResetPasswordSerializer(serializers.Serializer):
 
         if new_pass != confirm_pass:
             raise serializers.ValidationError("new password and confirmed password aren't match")
+        
+        if len(new_pass) <= 6:
+            raise serializers.ValidationError("Password length must be greater then 5")
+
+        if not re.search(r'[A-Za-z]', new_pass) or not re.search(r'[0-9]', new_pass) or not re.search(r'[^A-Za-z0-9]', new_pass):
+            raise serializers.ValidationError("Password must contains letter, digit and special character")
         
         return data
