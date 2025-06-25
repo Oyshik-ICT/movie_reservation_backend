@@ -15,8 +15,8 @@ urlpatterns = [
     path('reset-password/', ResetPassword, name="reset-password"),
 ]
 
-routers = DefaultRouter()
-routers.register("users", UserViewset, basename="users")
-routers.register("admin-users", AdminUserViewset, basename="adminusers")
+router = DefaultRouter()
+router.register("users", UserViewset, basename="users")
+router.register("admin-users", AdminUserViewset, basename="adminusers")
 
-urlpatterns += routers.urls
+urlpatterns += router.urls

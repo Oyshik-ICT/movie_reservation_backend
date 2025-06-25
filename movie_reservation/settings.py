@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "user.apps.UserConfig",
+    "actor.apps.ActorConfig",
     "rest_framework",
     "rest_framework_simplejwt",
     "silk",
