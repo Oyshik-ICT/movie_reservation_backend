@@ -8,13 +8,13 @@ from rest_framework.response import Response
 
 class AdminMovieViewset(viewsets.ModelViewSet):
     serializer_class = MovieSerializer
-    queryset = Movie.objects.all()
+    queryset = Movie.objects.prefetch_related("actor")
     permission_classes = [IsAdmin]
 
 
 @api_view(['GET'])
-@permission_classes(['AllowAny'])
-def NormalUserMovieView():
-    movies = Movie.objects.all()
+@permission_classes([AllowAny])
+def NormalUserMovieView(request):
+    movies = Movie.objects.prefetch_related("actor")
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
