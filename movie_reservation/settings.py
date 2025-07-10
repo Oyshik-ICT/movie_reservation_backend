@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "user.apps.UserConfig",
     "actor.apps.ActorConfig",
     "movie.apps.MovieConfig",
+    "theater.apps.TheaterConfig",
     "rest_framework",
     "rest_framework_simplejwt",
     "silk",
