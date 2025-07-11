@@ -6,9 +6,15 @@ class Theater(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=200)
 
+    def __str__(self):
+        return f"Theater name: {self.name}"
+
 class Auditorium(models.Model):
     name = models.CharField(max_length=10)
     theater = models.ForeignKey(Theater, on_delete=models.CASCADE, related_name="auditoriums")
+
+    def __str__(self):
+        return f"Auditorium name: {self.name}"
 
 class Seat(models.Model):
     row_number = models.CharField(max_length=2, choices=RowChoice.choices)
