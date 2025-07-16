@@ -27,6 +27,7 @@ urlpatterns = [
     path("movie/", include("movie.urls")),
     path("theater/", include("theater.urls.theater_urls")),
     path("auditorium/", include("theater.urls.auditorium_urls")),
+    path("seat/", include("theater.urls.seat_urls")),
     path('silk/', include('silk.urls', namespace='silk'))
 ]
 
