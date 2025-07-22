@@ -1,5 +1,5 @@
-from .models import Theater, Auditorium, Seat
-from .serializers import TheaterSerializer, AuditoriumReadSerializer, AuditoriumWriteSerializer, SeatReadSerializer, SeatUpdateSerializer, SeatBulkCreateSerializer
+from .models import Theater, Auditorium, Seat, MovieShowing
+from .serializers import TheaterSerializer, AuditoriumReadSerializer, AuditoriumWriteSerializer, SeatReadSerializer, SeatUpdateSerializer, SeatBulkCreateSerializer, MovieShowingReadSerializer, MovieShowingWriteSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 from user.permissions import IsAdmin
@@ -101,3 +101,20 @@ class SeatViewset(viewsets.ModelViewSet):
         
         seats = self.get_queryset().filter(auditorium=auditorium_id)
         return Response(SeatReadSerializer(seats, many=True).data)
+    
+class MovieShowingViewset(viewsets.ModelViewSet):
+    queryset = MovieShowing.objects.select_related("auditorium__theater", "movie").prefetch_related("movie__actor")
+    
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return MovieShowingWriteSerializer
+        
+        return MovieShowingReadSerializer
+        
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            self.permission_classes = [AllowAny]
+        else:
+            self.permission_classes = [IsAdmin]
+
+        return super().get_permissions()

@@ -14,7 +14,7 @@ class Auditorium(models.Model):
     theater = models.ForeignKey(Theater, on_delete=models.CASCADE, related_name="auditoriums")
 
     def __str__(self):
-        return f"Auditorium name: {self.name}"
+        return f"Auditorium: {self.name}, Theater: {self.theater.name}"
 
 class Seat(models.Model):
     row_number = models.CharField(max_length=2, choices=RowChoice.choices)

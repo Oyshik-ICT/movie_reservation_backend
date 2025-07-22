@@ -1,6 +1,8 @@
-from .models import Theater, Auditorium, Seat
+from .models import Theater, Auditorium, Seat, MovieShowing
 from rest_framework import serializers
 from .choices import RowChoice, SeatTypeChoice
+import datetime
+from movie.serializers import MovieSerializer
 
 class TheaterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -106,6 +108,34 @@ class SeatUpdateSerializer(serializers.ModelSerializer):
         model = Seat
         fields = ["is_active", "seat_type"]
 
+    def update(self, instance, validated_data):
+        update_fields = []
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+            update_fields.append(attr)
+
+        instance.save(update_fields=update_fields)
+        return instance
+    
+class MovieShowingReadSerializer(serializers.ModelSerializer):
+    auditorium = AuditoriumReadSerializer(read_only=True)
+    movie = MovieSerializer(read_only=True)
+    class Meta:
+        model = MovieShowing
+        fields = ['id', 'auditorium', 'movie', 'date', 'time', 'price']
+
+class MovieShowingWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MovieShowing
+        fields = ['id', 'auditorium', 'movie', 'date', 'time', 'price']
+
+    def validate_date(self, value):
+        if value <= datetime.date.today():
+            raise serializers.ValidationError("Date must be a future date")
+        
+        return value
+    
     def update(self, instance, validated_data):
         update_fields = []
 
