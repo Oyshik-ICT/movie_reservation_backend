@@ -15,6 +15,12 @@ from rest_framework.response import Response
 from rest_framework import status
 import secrets
 from django.core.cache import cache
+from rest_framework.decorators import api_view, throttle_classes
+from .password_service import PasswordResetThrottle, PasswordResetService
+from datetime import datetime, timedelta
+import hashlib
+import time
+
 
 class UserViewset(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
@@ -47,88 +53,119 @@ class AdminUserViewset(viewsets.ModelViewSet):
             raise PermissionDenied("You can only modify your own profile.")
         return obj
 
-@api_view(["POST"])  
-def ForgetPassword(request):
+
+@api_view(['POST'])
+@throttle_classes([PasswordResetThrottle])
+def forgot_password_request(request):
+    """
+    INDUSTRY STANDARD: OWASP-compliant password reset request
+    - Consistent response time and messages
+    - Rate limiting
+    - Secure token generation
+    - No user enumeration
+    """
+    
     serializer = ForgetPasswordSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
+    email = request.data.get('email', '').strip().lower()
 
-    email = request.data.get("email")
-    user = CustomUser.objects.get(email=email)
-
-    custom_token = secrets.token_urlsafe(32)
-
-    token_data = {
-        "user_id": user.pk,
-        "used": False
-    }
-
-    cache.set(custom_token, token_data, timeout=900)
-
-
-    uid = urlsafe_base64_encode(force_bytes(user.pk))
-
-    reset_link = f"http://127.0.0.1:8000/auth/reset-password/?uid={uid}&token={custom_token}"
-
-    send_mail(
-        subject="Reset your Password",
-        message=f"Click the link to reset your password: {reset_link}",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[user.email]
-    )
-
+    success, message, error= PasswordResetService.initiate_password_reset(email)
+    
+    if not success and error == "rate_limit":
+        return Response(
+            {"error": message},  # "Too many reset requests..."
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
+    if not success and error:
+        return Response(
+            {"error": message},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    
     return Response(
-        {"details": "Password reset link send to your mail"},
+        {"message": message},
         status=status.HTTP_200_OK
     )
 
-@api_view(["POST"])
-def ResetPassword(request):
-    serializer = ResetPasswordSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
+    
 
-    uid64 = request.query_params.get("uid")
-    token = request.query_params.get("token")
-    new_pass = request.data.get("new_password")
-
-    if not uid64 or not token:
+@api_view(['POST'])
+def verify_reset_pin(request):
+    """
+    INDUSTRY STANDARD: Verify PIN and issue reset token
+    - Brute force protection
+    - Single-use PINs
+    - Secure token exchange
+    """
+    email = request.data.get('email', '').strip().lower()
+    pin = request.data.get('pin', '').strip()
+    
+    if not email or not pin or len(pin) != 6 or not pin.isdigit():
         return Response(
-            {"details": "Invalid Reset Link"},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    uid = force_str(urlsafe_base64_decode(uid64))
-    user = CustomUser.objects.get(pk=uid)
-
-    if not validate_reset_token(token, user):
-        return Response(
-            {"details": "Invalid or Expire Reset Link"},
+            {"error": "Invalid email or PIN format"},
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    user.set_password(new_pass)
-    user.save(update_fields=["password"])
+    success, message, reset_token = PasswordResetService.verify_reset_pin(email, pin)
 
-    invalid_token(token)
-
+    if not success:
+        return Response(
+            {"error": message, },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
     return Response(
-        {"details": "Password Reset Successful"},
-        status=status.HTTP_400_BAD_REQUEST
+        {"message": message, "reset_token": reset_token},
+        status=status.HTTP_201_CREATED
     )
-        
-
-def validate_reset_token(token, user):
-    token_info = cache.get(token)
-
-    if not token_info or token_info["used"] or token_info["user_id"] != user.id:
-        return False
     
-    return True
+      
+@api_view(['POST'])
+def reset_password(request):
+    """
+    INDUSTRY STANDARD: Reset password with verified token
+    - Secure password validation
+    - Session invalidation
+    - User notification
+    """
+    reset_token = request.data.get('reset_token', '').strip()
+    new_password = request.data.get('new_password', '')
+    confirm_password = request.data.get('confirm_password', '')
+    
+    if not reset_token or not new_password:
+        return Response(
+            {"error": "Reset token and new password are required"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    if new_password != confirm_password:
+        return Response(
+            {"error": "Passwords do not match"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    # Validate password strength (OWASP guidelines)
+    if len(new_password) < 8:
+        return Response(
+            {"error": "Password must be at least 8 characters long"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    success, message = PasswordResetService.reset_password(reset_token, new_password)
 
-def invalid_token(token):
-    token_info = cache.get(token)
-
-    if token_info:
-        token_info["used"] = True
-        cache.set(token, token_info, timeout=60)
-
-
+    if not success:
+        if "Invalid or expired reset session" in message:
+            return Response(
+                {"error": message},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        return Response(
+            {"error": message},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    return Response(
+        {"message": message},
+        status=status.HTTP_200_OK
+    )
