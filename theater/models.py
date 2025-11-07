@@ -26,6 +26,9 @@ class Seat(models.Model):
     class Meta:
         unique_together = ('auditorium', 'row_number', 'seat_number')
 
+    def __str__(self):
+        return f"Seat: row={self.row_number}, seat_number={self.seat_number}, auditorium={self.auditorium.name}, theater={self.auditorium.theater.name}"
+
 class MovieShowing(models.Model):
     auditorium = models.ForeignKey(Auditorium, on_delete=models.CASCADE, related_name="movie_showing")
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie_showing")
@@ -35,3 +38,6 @@ class MovieShowing(models.Model):
 
     class Meta:
         unique_together = ('auditorium', 'date', 'time')
+
+    def __str__(self):
+        return f"MovieShowing: auditorium={self.auditorium.name}, theater={self.auditorium.theater.name}, movie={self.movie.title}, time={self.time}, date={self.date}"
