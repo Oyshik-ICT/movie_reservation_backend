@@ -1,0 +1,88 @@
+from payment.factory import PaymentGatewayFactory
+from payment.models import Payment
+
+
+class PaymentService:
+    def __init__(self, gateway_type):
+        config = self.get_geteway_config(gateway_type)
+        self.gateway = PaymentGatewayFactory.create(gateway_type, config)
+        self.gateway_type = gateway_type
+
+    def get_geteway_config(self, gateway_type):
+        pass
+
+    def initiate_payment(self, booking, customer_info):
+        payment = Payment.objects.create(
+            booking=booking,
+            gateway_type=self.gateway_type,
+            amount=booking.total_money,
+        )
+
+        result = self.gateway.initialize_payment(
+            payment_id=str(payment.id),
+            amount=payment.amount,
+            currency="BDT",
+            customer_info=customer_info,
+        )
+
+        if result["success"]:
+            payment.gateway_transaction_id = result.get("transaction_id")
+            payment.gateway_response = result
+            payment.payment_status = "PENDING"
+            payment.save(
+                update_fields=[
+                    "gateway_transaction_id",
+                    "gateway_response",
+                    "payment_status",
+                ]
+            )
+
+            return {
+                "success": True,
+                "payment_id": str(payment.id),
+                "payment_url": result["payment_url"],
+            }
+
+        payment.gateway_response = result
+        payment.payment_status = "FAILED"
+        payment.save(
+            update_fields=[
+                "gateway_response",
+                "payment_status",
+            ]
+        )
+
+        return {"success": False, "error": result.get("error")}
+
+    def verify_and_complete_payment(self, payment_id, callback_data):
+        payment = Payment.objects.get(id=payment_id)
+
+        result = self.gateway.verify_payment(
+            transaction_id=payment.gateway_transaction_id, callback_data=callback_data
+        )
+
+        payment.gateway_response = result
+
+        if result["success"] and result["status"] == "completed":
+            payment.payment_status = "COMPLETED"
+            payment.save(update_fields=["payment_status"])
+
+            booking = payment.booking
+            booking.booking_status = "CONFIRMED"
+            booking.save(update_fields=["booking_status"])
+
+            # Send confirmation email/SMS
+            # self._send_confirmation(booking)
+
+            return {
+                "success": True,
+                "booking_id": str(booking.booking_id),
+                "payment_id": str(payment.payment_id),
+            }
+
+        payment.payment_status = "FAILED"
+        payment.save(update_fields=["payment_status"])
+        booking.booking_status = "CANCELLED"
+        booking.save(update_fields=["booking_status"])
+
+        return {"success": False, "error": result.get("error")}
