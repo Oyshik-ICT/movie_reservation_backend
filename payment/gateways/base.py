@@ -4,8 +4,6 @@ from abc import ABC, abstractmethod
 class BasePaymentGateway(ABC):
     def __init__(self, config):
         self.config = config
-        self.session_url = self.session_url
-        # self.mode = self.config.get("mode", "sandbox")
         self.validate_config()
 
     @abstractmethod
@@ -18,10 +16,10 @@ class BasePaymentGateway(ABC):
     ):
         pass
 
-    @abstractmethod
-    def verify_payment(self, transaction_id, callback_data):
-        pass
+    # @abstractmethod
+    # def verify_payment(self, transaction_id, callback_data):
+    #     pass
 
-    @abstractmethod
-    def handle_webhook(self, webhook_data, headers):
-        pass
+    # @abstractmethod
+    # def handle_webhook(self, webhook_data, headers):
+    #     pass

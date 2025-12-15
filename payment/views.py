@@ -14,7 +14,7 @@ class PaymentCreateAPIView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         payment_service = PaymentService(serializer.validated_data["gateway_type"])
         user = self.request.user
-        payment_service.initiate_payment(
+        data = payment_service.initiate_payment(
             serializer.validated_data["booking"],
             {
                 "name": user.username,
@@ -22,4 +22,4 @@ class PaymentCreateAPIView(CreateAPIView):
                 "phone": user.phone_number,
             },
         )
-        return Response({"message": "ok"})
+        return Response(data)

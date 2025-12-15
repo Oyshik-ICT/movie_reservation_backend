@@ -18,7 +18,7 @@ class PaymentService:
         )
 
         result = self.gateway.initialize_payment(
-            payment_id=str(payment.id),
+            payment_id=str(payment.payment_id),
             amount=payment.amount,
             currency="BDT",
             customer_info=customer_info,
@@ -36,8 +36,8 @@ class PaymentService:
 
             return {
                 "success": True,
-                "payment_id": str(payment.id),
-                "payment_url": result["payment_url"],
+                "payment_id": str(payment.payment_id),
+                "payment_url": result["GatewayPageURL"],
             }
 
         payment.gateway_response = result
@@ -49,7 +49,7 @@ class PaymentService:
             ]
         )
 
-        return {"success": False, "error": result.get("error")}
+        return {"success": False, "error": result.get("failedreason")}
 
     def verify_and_complete_payment(self, payment_id, callback_data):
         payment = Payment.objects.get(id=payment_id)

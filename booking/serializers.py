@@ -42,6 +42,8 @@ class BookingSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "user": {"read_only": True},
             "total_money": {"read_only": True},
+            "booking_id": {"read_only": True},
+            "payment_id": {"read_only": True},
         }
 
     def validate_movie_showing(self, value):
