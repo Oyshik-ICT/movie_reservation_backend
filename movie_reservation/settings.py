@@ -28,7 +28,9 @@ SECRET_KEY = "django-insecure--#@l37ibu%=g_5vqujb1re%hmrse_@r8a#4k0^15*vayotbsey
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
+CSRF_TRUSTED_ORIGINS = ["https://hwa-balmiest-sixta.ngrok-free.dev"]
 
 
 # Application definition
@@ -162,6 +164,12 @@ EMAIL_USE_TLS = env("EMAIL_USE_TLS", cast=bool)
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+
+SSLCOMMERZ_ID = env("SSLCOMMERZ_ID")
+SSLCOMMERZ_PASS = env("SSLCOMMERZ_PASS")
+SSLCOMMERZ_IS_SANDBOX = env("SSLCOMMERZ_IS_SANDBOX")
+
+BACKEND_URL = env("BACKEND_URL")
 
 AUTH_USER_MODEL = "user.CustomUser"
 

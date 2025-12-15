@@ -12,7 +12,7 @@ class Payment(models.Model):
     )
     payment_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     gateway_type = models.CharField(max_length=15, choices=GatewayType.choices)
-    gateway_transaction_id = models.CharField(max_length=255, unique=True)
+    gateway_transaction_id = models.CharField(max_length=255, unique=True, null=True)
     gateway_response = models.JSONField(null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_status = models.CharField(

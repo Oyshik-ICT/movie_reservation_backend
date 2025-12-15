@@ -1,3 +1,5 @@
+from django.conf import settings
+from payment.choice import GatewayType
 from payment.factory import PaymentGatewayFactory
 from payment.models import Payment
 
@@ -7,9 +9,6 @@ class PaymentService:
         config = self.get_geteway_config(gateway_type)
         self.gateway = PaymentGatewayFactory.create(gateway_type, config)
         self.gateway_type = gateway_type
-
-    def get_geteway_config(self, gateway_type):
-        pass
 
     def initiate_payment(self, booking, customer_info):
         payment = Payment.objects.create(
@@ -25,13 +24,11 @@ class PaymentService:
             customer_info=customer_info,
         )
 
-        if result["success"]:
-            payment.gateway_transaction_id = result.get("transaction_id")
+        if result["status"] == "SUCCESS":
             payment.gateway_response = result
             payment.payment_status = "PENDING"
             payment.save(
                 update_fields=[
-                    "gateway_transaction_id",
                     "gateway_response",
                     "payment_status",
                 ]
@@ -86,3 +83,11 @@ class PaymentService:
         booking.save(update_fields=["booking_status"])
 
         return {"success": False, "error": result.get("error")}
+
+    def get_geteway_config(self, gateway_type):
+        if gateway_type == GatewayType.SSLCOMMERZ:
+            return {
+                "store_id": settings.SSLCOMMERZ_ID,
+                "store_passwd": settings.SSLCOMMERZ_PASS,
+                "validation_url": "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php",
+            }

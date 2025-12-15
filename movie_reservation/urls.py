@@ -30,6 +30,7 @@ urlpatterns = [
     path("seat/", include("theater.urls.seat_urls")),
     path("movie-showing/", include("theater.urls.movie_showing_urls")),
     path("booking/", include("booking.urls")),
+    path("pay/", include("payment.urls")),
     path("silk/", include("silk.urls", namespace="silk")),
 ]
 

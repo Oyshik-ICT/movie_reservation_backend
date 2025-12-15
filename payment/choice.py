@@ -3,6 +3,7 @@ from django.db import models
 
 class GatewayType(models.TextChoices):
     PAYPAL = "PAYPAL", "Paypal"
+    SSLCOMMERZ = "SSLCOMMERZ", "Sslcommerz"
     AMARPAY = "AMARPAY", "Amarpay"
     SHURJOPAY = "SHURJOPAY", "Shurjopay"
 

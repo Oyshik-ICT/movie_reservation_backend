@@ -1,7 +1,9 @@
-from django.db import models
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db import models
+
 from .choices import UserRole
+
 
 class CustomUserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
@@ -40,10 +42,14 @@ class CustomUserManager(BaseUserManager):
 
         return self._create_user(email, password, **extra_fields)
 
+
 class CustomUser(AbstractUser):
-    username = None
+    username = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
-    role = models.CharField(max_length=20, choices=UserRole.choices, default=UserRole.REGULAR_USER)
+    role = models.CharField(
+        max_length=20, choices=UserRole.choices, default=UserRole.REGULAR_USER
+    )
+    phone_number = models.CharField(max_length=20, unique=True, null=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

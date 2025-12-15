@@ -1,5 +1,10 @@
+from payment.gateways.sslcommerz import SslcommerzGateway
+
+
 class PaymentGatewayFactory:
-    gateways = {}
+    gateways = {
+        "SSLCOMMERZ": SslcommerzGateway,
+    }
 
     @classmethod
     def create(cls, gateway_type, config):

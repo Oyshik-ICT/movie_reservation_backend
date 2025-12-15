@@ -10,13 +10,20 @@ class CustomUserAdmin(UserAdmin):
     """Customize how CustomUser is displayed in Django admin."""
 
     model = CustomUser
-    list_display = ("email", "role", "is_staff", "is_superuser")
+    list_display = (
+        "username",
+        "email",
+        "phone_number",
+        "role",
+        "is_staff",
+        "is_superuser",
+    )
     list_filter = ("role", "is_staff", "is_superuser")
     ordering = ("email",)
     search_fields = ("email",)
 
     fieldsets = (
-        (None, {"fields": ("email", "password")}),
+        (None, {"fields": ("email", "password", "phone_number")}),
         (
             "Permissions",
             {
@@ -39,7 +46,9 @@ class CustomUserAdmin(UserAdmin):
             {
                 "classes": ("wide",),
                 "fields": (
+                    "username",
                     "email",
+                    "phone_number",
                     "password1",
                     "password2",
                     "role",
