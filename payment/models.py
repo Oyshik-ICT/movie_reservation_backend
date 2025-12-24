@@ -20,6 +20,7 @@ class Payment(models.Model):
         choices=PaymentStatusChoice.choices,
         default=PaymentStatusChoice.UNPAID,
     )
+    status_reason = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

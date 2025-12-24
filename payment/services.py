@@ -84,6 +84,13 @@ class PaymentService:
 
         return {"success": False, "error": result.get("error")}
 
+    @classmethod
+    def payment_status_update(cls, payment, status, reason=None):
+        payment.payment_status = status
+        payment.status_reason = reason
+
+        payment.save(update_fields=["payment_status", "status_reason"])
+
     def get_geteway_config(self, gateway_type):
         if gateway_type == GatewayType.SSLCOMMERZ:
             return {
