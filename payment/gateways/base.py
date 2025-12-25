@@ -16,9 +16,9 @@ class BasePaymentGateway(ABC):
     ):
         pass
 
-    # @abstractmethod
-    # def verify_payment(self, transaction_id, callback_data):
-    #     pass
+    @abstractmethod
+    def verify(self, data):
+        pass
 
     # @abstractmethod
     # def handle_webhook(self, webhook_data, headers):

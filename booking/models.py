@@ -31,3 +31,8 @@ class Booking(models.Model):
             models.Index(fields=["user", "-created_at"]),
             models.Index(fields=["movie_showing", "booking_status"]),
         ]
+
+    @property
+    def confirm(self):
+        self.booking_status = BookingStatusChoice.CONFIRMED
+        self.save(update_fields=["booking_status"])

@@ -27,10 +27,10 @@ class SslcommerzGateway(BasePaymentGateway):
             "total_amount": amount,
             "currency": currency,
             "tran_id": payment_id,
-            "success_url": f"{BACKEND_URL}/payments/{payment_id}/success/",
-            "fail_url": f"{BACKEND_URL}/{payment_id}/failed/",
-            "cancel_url": f"{BACKEND_URL}/{payment_id}/cancel/",
-            "ipn_url": f"{BACKEND_URL}/payments/{payment_id}/ipn/",
+            "success_url": f"{BACKEND_URL}/pay/{payment_id}/success/",
+            "fail_url": f"{BACKEND_URL}/pay/{payment_id}/failed/",
+            "cancel_url": f"{BACKEND_URL}/pay/{payment_id}/cancel/",
+            "ipn_url": f"{BACKEND_URL}/pay/{payment_id}/ipn/",
             "cus_name": customer_info.get("name"),
             "cus_email": customer_info.get("email"),
             "cus_phone": customer_info.get("phone"),
@@ -48,4 +48,20 @@ class SslcommerzGateway(BasePaymentGateway):
         response.raise_for_status()
 
         response = response.json()
+        return response
+
+    def verify(self, data):
+        params = {
+            "val_id": data["val_id"],
+            "store_id": self.config["store_id"],
+            "store_passwd": self.config["store_passwd"],
+            "format": "json",
+            "v": "1",
+        }
+        validation_url = self.config["validation_url"]
+        response = requests.get(validation_url, params=params)
+        response = response.json()
+
+        if response.get("status") not in ["VALID", "VALIDATED"]:
+            raise Exception(response.get("failedreason"))
         return response

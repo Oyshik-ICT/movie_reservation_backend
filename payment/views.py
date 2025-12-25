@@ -35,9 +35,20 @@ class SslcommerzIPNAPIView(APIView):
         except payment.DoesNotExist:
             raise NotFound
 
+        payment_service = PaymentService(payment.gateway_type)
+
         if request.data.get("FAILED"):
-            PaymentService.payment_status_update(
+            payment_service.payment_status_update(
                 payment, "FAILED", request.data.get("error")
+            )
+        else:
+            payment_service.verify_and_confirm_payment(
+                payment, {"val_id": request.data.get("val_id")}
             )
 
         return Response(data="IPN received successfully")
+
+
+class SuceessAPIView(APIView):
+    def post(self, request, payment_id):
+        return Response({"payment_id": payment_id}, status=200)

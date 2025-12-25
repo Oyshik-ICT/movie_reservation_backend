@@ -51,45 +51,22 @@ class PaymentService:
 
         return {"success": False, "error": result.get("failedreason")}
 
-    def verify_and_complete_payment(self, payment_id, callback_data):
-        payment = Payment.objects.get(id=payment_id)
+    def verify_and_confirm_payment(self, payment, data):
+        try:
+            response = self.gateway.verify(data)
+            self.payment_status_update(payment, "PAID")
 
-        result = self.gateway.verify_payment(
-            transaction_id=payment.gateway_transaction_id, callback_data=callback_data
-        )
+        except Exception as e:
+            self.payment_status_update(payment, "FAILED", e.args[0])
 
-        payment.gateway_response = result
-
-        if result["success"] and result["status"] == "completed":
-            payment.payment_status = "COMPLETED"
-            payment.save(update_fields=["payment_status"])
-
-            booking = payment.booking
-            booking.booking_status = "CONFIRMED"
-            booking.save(update_fields=["booking_status"])
-
-            # Send confirmation email/SMS
-            # self._send_confirmation(booking)
-
-            return {
-                "success": True,
-                "booking_id": str(booking.booking_id),
-                "payment_id": str(payment.payment_id),
-            }
-
-        payment.payment_status = "FAILED"
-        payment.save(update_fields=["payment_status"])
-        booking.booking_status = "CANCELLED"
-        booking.save(update_fields=["booking_status"])
-
-        return {"success": False, "error": result.get("error")}
-
-    @classmethod
-    def payment_status_update(cls, payment, status, reason=None):
+    def payment_status_update(self, payment, status, reason=None):
         payment.payment_status = status
         payment.status_reason = reason
 
         payment.save(update_fields=["payment_status", "status_reason"])
+
+        if status == "PAID":
+            payment.booking.confirm
 
     def get_geteway_config(self, gateway_type):
         if gateway_type == GatewayType.SSLCOMMERZ:
