@@ -1,11 +1,13 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from payment.models import Payment
-from payment.serializers import PaymentCreateSerializer
+from payment.serializers import PayamentSerializer, PaymentCreateSerializer
 from payment.services import PaymentService
 from rest_framework.exceptions import NotFound
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from user.permissions import IsAdmin
 
 
 class PaymentCreateAPIView(CreateAPIView):
@@ -52,3 +54,23 @@ class SslcommerzIPNAPIView(APIView):
 class SuceessAPIView(APIView):
     def post(self, request, payment_id):
         return Response({"payment_id": payment_id}, status=200)
+
+
+class CancellAPIView(APIView):
+    def post(self, request, payment_id):
+        payment = Payment.objects.get(payment_id=payment_id)
+        payment.payment_status = "CANCELLED"
+        payment.save(update_fields=["payment_status"])
+        payment.booking.booking_status = "CANCELLED"
+        payment.booking.save(update_fields=["booking_status"])
+        return Response(
+            {"message": f"Cancell successful for id: {payment_id}"}, status=200
+        )
+
+
+class PaymentListAPIView(ListAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PayamentSerializer
+    permission_classes = [IsAdmin]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["payment_status"]

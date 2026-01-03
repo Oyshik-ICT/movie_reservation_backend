@@ -9,8 +9,8 @@ class GatewayType(models.TextChoices):
 
 
 class PaymentStatusChoice(models.TextChoices):
-    PAID = "Paid", "Paid"
-    UNPAID = "Unpaid", "Unpaid"
+    PAID = "PAID", "Paid"
+    UNPAID = "UNPAID", "Unpaid"
     PENDING = "PENDING", "Payment_Pending"
     FAILED = "FAILED", "Failed"
     CANCELLED = "CANCELLED", "Cancelled"
