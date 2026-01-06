@@ -24,8 +24,9 @@ class PaymentService:
             customer_info=customer_info,
         )
 
+        payment.gateway_response = result
+
         if result["status"] == "SUCCESS":
-            payment.gateway_response = result
             payment.payment_status = "PENDING"
             payment.save(
                 update_fields=[
@@ -40,7 +41,6 @@ class PaymentService:
                 "payment_url": result["GatewayPageURL"],
             }
 
-        payment.gateway_response = result
         payment.payment_status = "FAILED"
         payment.save(
             update_fields=[
@@ -67,6 +67,8 @@ class PaymentService:
 
         if status == "PAID":
             payment.booking.confirm
+        elif status in ["FAILED", "CANCELLED"]:
+            payment.booking.cancell
 
     def get_geteway_config(self, gateway_type):
         if gateway_type == GatewayType.SSLCOMMERZ:

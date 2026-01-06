@@ -35,3 +35,8 @@ class Booking(models.Model):
     def confirm(self):
         self.booking_status = BookingStatusChoice.CONFIRMED
         self.save(update_fields=["booking_status"])
+
+    @property
+    def cancell(self):
+        self.booking_status = BookingStatusChoice.CANCELLED
+        self.save(update_fields=["booking_status"])

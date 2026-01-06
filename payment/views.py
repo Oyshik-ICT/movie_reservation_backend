@@ -39,9 +39,13 @@ class SslcommerzIPNAPIView(APIView):
 
         payment_service = PaymentService(payment.gateway_type)
 
-        if request.data.get("FAILED"):
+        if request.data.get("status") == "FAILED":
             payment_service.payment_status_update(
                 payment, "FAILED", request.data.get("error")
+            )
+        elif request.data.get("status") == "CANCELLED":
+            payment_service.payment_status_update(
+                payment, "CANCELLED", request.data.get("error")
             )
         else:
             payment_service.verify_and_confirm_payment(
@@ -56,16 +60,26 @@ class SuceessAPIView(APIView):
         return Response({"payment_id": payment_id}, status=200)
 
 
+class FailedAPIView(APIView):
+    def post(self, request, payment_id):
+        # payment = Payment.objects.get(payment_id=payment_id)
+        # payment.payment_status = "FAILED"
+        # payment.save(update_fields=["payment_status"])
+        # payment.booking.cancell
+        # return Response({"message": f"Failed payment for id: {payment_id}"}, status=200)
+        return Response({"payment_id": payment_id, "message": "failed"}, status=200)
+
+
 class CancellAPIView(APIView):
     def post(self, request, payment_id):
-        payment = Payment.objects.get(payment_id=payment_id)
-        payment.payment_status = "CANCELLED"
-        payment.save(update_fields=["payment_status"])
-        payment.booking.booking_status = "CANCELLED"
-        payment.booking.save(update_fields=["booking_status"])
-        return Response(
-            {"message": f"Cancell successful for id: {payment_id}"}, status=200
-        )
+        # payment = Payment.objects.get(payment_id=payment_id)
+        # payment.payment_status = "CANCELLED"
+        # payment.save(update_fields=["payment_status"])
+        # payment.booking.cancell
+        # return Response(
+        #     {"message": f"Cancell successful for id: {payment_id}"}, status=200
+        # )
+        return Response({"payment_id": payment_id, "message": "cancelled"}, status=200)
 
 
 class PaymentListAPIView(ListAPIView):

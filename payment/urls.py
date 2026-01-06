@@ -1,6 +1,7 @@
 from django.urls import path
 from payment.views import (
     CancellAPIView,
+    FailedAPIView,
     PaymentCreateAPIView,
     PaymentListAPIView,
     SslcommerzIPNAPIView,
@@ -11,6 +12,7 @@ urlpatterns = [
     path("", PaymentCreateAPIView.as_view()),
     path("<uuid:payment_id>/ipn/", SslcommerzIPNAPIView.as_view()),
     path("<uuid:payment_id>/success/", SuceessAPIView.as_view()),
-    path("<uuid:payment_id>/failed/", CancellAPIView.as_view()),
+    path("<uuid:payment_id>/failed/", FailedAPIView.as_view()),
+    path("<uuid:payment_id>/cancel/", CancellAPIView.as_view()),
     path("lists/", PaymentListAPIView.as_view()),
 ]
