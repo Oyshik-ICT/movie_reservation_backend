@@ -34,7 +34,7 @@ class SslcommerzIPNAPIView(APIView):
     def post(self, request, *args, **kwargs):
         try:
             payment = Payment.objects.get(payment_id=kwargs["payment_id"])
-        except payment.DoesNotExist:
+        except Payment.DoesNotExist:
             raise NotFound
 
         payment_service = PaymentService(payment.gateway_type)

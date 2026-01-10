@@ -68,7 +68,7 @@ class PaymentService:
         if status == "PAID":
             payment.booking.confirm
         elif status in ["FAILED", "CANCELLED"]:
-            payment.booking.cancell
+            payment.booking.cancel
 
     def get_geteway_config(self, gateway_type):
         if gateway_type == GatewayType.SSLCOMMERZ:
