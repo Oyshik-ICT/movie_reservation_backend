@@ -62,23 +62,11 @@ class SuceessAPIView(APIView):
 
 class FailedAPIView(APIView):
     def post(self, request, payment_id):
-        # payment = Payment.objects.get(payment_id=payment_id)
-        # payment.payment_status = "FAILED"
-        # payment.save(update_fields=["payment_status"])
-        # payment.booking.cancell
-        # return Response({"message": f"Failed payment for id: {payment_id}"}, status=200)
         return Response({"payment_id": payment_id, "message": "failed"}, status=200)
 
 
 class CancellAPIView(APIView):
     def post(self, request, payment_id):
-        # payment = Payment.objects.get(payment_id=payment_id)
-        # payment.payment_status = "CANCELLED"
-        # payment.save(update_fields=["payment_status"])
-        # payment.booking.cancell
-        # return Response(
-        #     {"message": f"Cancell successful for id: {payment_id}"}, status=200
-        # )
         return Response({"payment_id": payment_id, "message": "cancelled"}, status=200)
 
 
