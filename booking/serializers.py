@@ -65,7 +65,12 @@ class BookingSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         try:
-            seat_ids = [seat.id for seat in validated_data["seat"]]
+            seat_ids = []
+
+            for seat in validated_data["seat"]:
+                if not seat.is_active:
+                    raise serializers.ValidationError("Seat is inactive")
+                seat_ids.append(seat.id)
 
             if Booking.objects.filter(
                 movie_showing=validated_data["movie_showing"], seat__id__in=seat_ids
