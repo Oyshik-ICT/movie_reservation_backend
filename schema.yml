@@ -1,0 +1,2329 @@
+openapi: 3.0.3
+info:
+  title: Movie Reservation APIs
+  version: 1.0.0
+paths:
+  /actor/information/:
+    get:
+      operationId: actor_information_list
+      tags:
+      - actor
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Actor'
+          description: ''
+    post:
+      operationId: actor_information_create
+      tags:
+      - actor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Actor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Actor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Actor'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+          description: ''
+  /actor/information/{id}/:
+    get:
+      operationId: actor_information_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this actor_ detail.
+        required: true
+      tags:
+      - actor
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+          description: ''
+    put:
+      operationId: actor_information_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this actor_ detail.
+        required: true
+      tags:
+      - actor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Actor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Actor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Actor'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+          description: ''
+    patch:
+      operationId: actor_information_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this actor_ detail.
+        required: true
+      tags:
+      - actor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedActor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedActor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedActor'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+          description: ''
+    delete:
+      operationId: actor_information_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this actor_ detail.
+        required: true
+      tags:
+      - actor
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /auditorium/auditorium-info/:
+    get:
+      operationId: auditorium_auditorium_info_list
+      tags:
+      - auditorium
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditoriumRead'
+          description: ''
+    post:
+      operationId: auditorium_auditorium_info_create
+      tags:
+      - auditorium
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuditoriumWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuditoriumWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuditoriumWrite'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditoriumWrite'
+          description: ''
+  /auditorium/auditorium-info/{id}/:
+    get:
+      operationId: auditorium_auditorium_info_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this auditorium.
+        required: true
+      tags:
+      - auditorium
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditoriumRead'
+          description: ''
+    put:
+      operationId: auditorium_auditorium_info_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this auditorium.
+        required: true
+      tags:
+      - auditorium
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuditoriumWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuditoriumWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuditoriumWrite'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditoriumWrite'
+          description: ''
+    patch:
+      operationId: auditorium_auditorium_info_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this auditorium.
+        required: true
+      tags:
+      - auditorium
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAuditoriumWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAuditoriumWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAuditoriumWrite'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditoriumWrite'
+          description: ''
+    delete:
+      operationId: auditorium_auditorium_info_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this auditorium.
+        required: true
+      tags:
+      - auditorium
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /auth/admin-users/:
+    get:
+      operationId: auth_admin_users_list
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomAdminUser'
+          description: ''
+    post:
+      operationId: auth_admin_users_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomAdminUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomAdminUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomAdminUser'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomAdminUser'
+          description: ''
+  /auth/admin-users/{id}/:
+    get:
+      operationId: auth_admin_users_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomAdminUser'
+          description: ''
+    put:
+      operationId: auth_admin_users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomAdminUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomAdminUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomAdminUser'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomAdminUser'
+          description: ''
+    patch:
+      operationId: auth_admin_users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomAdminUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomAdminUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomAdminUser'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomAdminUser'
+          description: ''
+    delete:
+      operationId: auth_admin_users_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /auth/api/token/:
+    post:
+      operationId: auth_api_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /auth/api/token/refresh/:
+    post:
+      operationId: auth_api_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /auth/forgot-password/:
+    post:
+      operationId: auth_forgot_password_create
+      description: |-
+        INDUSTRY STANDARD: OWASP-compliant password reset request
+        - Consistent response time and messages
+        - Rate limiting
+        - Secure token generation
+        - No user enumeration
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /auth/reset-password/:
+    post:
+      operationId: auth_reset_password_create
+      description: |-
+        INDUSTRY STANDARD: Reset password with verified token
+        - Secure password validation
+        - Session invalidation
+        - User notification
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /auth/users/:
+    get:
+      operationId: auth_users_list
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomUser'
+          description: ''
+    post:
+      operationId: auth_users_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+          description: ''
+  /auth/users/{id}/:
+    get:
+      operationId: auth_users_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+          description: ''
+    put:
+      operationId: auth_users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+          description: ''
+    patch:
+      operationId: auth_users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUser'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+          description: ''
+    delete:
+      operationId: auth_users_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /auth/verify-pin/:
+    post:
+      operationId: auth_verify_pin_create
+      description: |-
+        INDUSTRY STANDARD: Verify PIN and issue reset token
+        - Brute force protection
+        - Single-use PINs
+        - Secure token exchange
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /booking/:
+    get:
+      operationId: booking_list
+      tags:
+      - booking
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+          description: ''
+    post:
+      operationId: booking_create
+      tags:
+      - booking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Booking'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Booking'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+          description: ''
+  /booking/{booking_id}/:
+    get:
+      operationId: booking_retrieve
+      parameters:
+      - in: path
+        name: booking_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this booking.
+        required: true
+      tags:
+      - booking
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+          description: ''
+    put:
+      operationId: booking_update
+      parameters:
+      - in: path
+        name: booking_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this booking.
+        required: true
+      tags:
+      - booking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Booking'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Booking'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+          description: ''
+    patch:
+      operationId: booking_partial_update
+      parameters:
+      - in: path
+        name: booking_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this booking.
+        required: true
+      tags:
+      - booking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBooking'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBooking'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBooking'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+          description: ''
+    delete:
+      operationId: booking_destroy
+      parameters:
+      - in: path
+        name: booking_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this booking.
+        required: true
+      tags:
+      - booking
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /movie-showing/:
+    get:
+      operationId: movie_showing_list
+      tags:
+      - movie-showing
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieShowingRead'
+          description: ''
+    post:
+      operationId: movie_showing_create
+      tags:
+      - movie-showing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieShowingWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MovieShowingWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MovieShowingWrite'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieShowingWrite'
+          description: ''
+  /movie-showing/{id}/:
+    get:
+      operationId: movie_showing_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this movie showing.
+        required: true
+      tags:
+      - movie-showing
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieShowingRead'
+          description: ''
+    put:
+      operationId: movie_showing_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this movie showing.
+        required: true
+      tags:
+      - movie-showing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieShowingWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MovieShowingWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MovieShowingWrite'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieShowingWrite'
+          description: ''
+    patch:
+      operationId: movie_showing_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this movie showing.
+        required: true
+      tags:
+      - movie-showing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMovieShowingWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMovieShowingWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMovieShowingWrite'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieShowingWrite'
+          description: ''
+    delete:
+      operationId: movie_showing_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this movie showing.
+        required: true
+      tags:
+      - movie-showing
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /movie/admin-movies/:
+    get:
+      operationId: movie_admin_movies_list
+      tags:
+      - movie
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+          description: ''
+    post:
+      operationId: movie_admin_movies_create
+      tags:
+      - movie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+          description: ''
+  /movie/admin-movies/{id}/:
+    get:
+      operationId: movie_admin_movies_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this movie.
+        required: true
+      tags:
+      - movie
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+          description: ''
+    put:
+      operationId: movie_admin_movies_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this movie.
+        required: true
+      tags:
+      - movie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+          description: ''
+    patch:
+      operationId: movie_admin_movies_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this movie.
+        required: true
+      tags:
+      - movie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMovie'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMovie'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMovie'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+          description: ''
+    delete:
+      operationId: movie_admin_movies_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this movie.
+        required: true
+      tags:
+      - movie
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /movie/user-movies/:
+    get:
+      operationId: movie_user_movies_retrieve
+      tags:
+      - movie
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /pay/:
+    post:
+      operationId: pay_create
+      tags:
+      - pay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PaymentCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PaymentCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCreate'
+          description: ''
+  /pay/{payment_id}/cancel/:
+    post:
+      operationId: pay_cancel_create
+      parameters:
+      - in: path
+        name: payment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - pay
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /pay/{payment_id}/failed/:
+    post:
+      operationId: pay_failed_create
+      parameters:
+      - in: path
+        name: payment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - pay
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /pay/{payment_id}/ipn/:
+    post:
+      operationId: pay_ipn_create
+      parameters:
+      - in: path
+        name: payment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - pay
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /pay/{payment_id}/success/:
+    post:
+      operationId: pay_success_create
+      parameters:
+      - in: path
+        name: payment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - pay
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /pay/lists/:
+    get:
+      operationId: pay_lists_list
+      parameters:
+      - in: query
+        name: payment_status
+        schema:
+          type: string
+          enum:
+          - CANCELLED
+          - FAILED
+          - PAID
+          - PENDING
+          - UNPAID
+        description: |-
+          * `PAID` - Paid
+          * `UNPAID` - Unpaid
+          * `PENDING` - Payment_Pending
+          * `FAILED` - Failed
+          * `CANCELLED` - Cancelled
+      tags:
+      - pay
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payament'
+          description: ''
+  /seat/:
+    get:
+      operationId: seat_list
+      tags:
+      - seat
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SeatRead'
+          description: ''
+    post:
+      operationId: seat_create
+      tags:
+      - seat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeatRead'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SeatRead'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SeatRead'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeatRead'
+          description: ''
+  /seat/{id}/:
+    get:
+      operationId: seat_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this seat.
+        required: true
+      tags:
+      - seat
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeatRead'
+          description: ''
+    put:
+      operationId: seat_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this seat.
+        required: true
+      tags:
+      - seat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeatUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SeatUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SeatUpdate'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeatUpdate'
+          description: ''
+    patch:
+      operationId: seat_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this seat.
+        required: true
+      tags:
+      - seat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSeatUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSeatUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSeatUpdate'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeatUpdate'
+          description: ''
+    delete:
+      operationId: seat_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this seat.
+        required: true
+      tags:
+      - seat
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /seat/bulk_create/:
+    post:
+      operationId: seat_bulk_create_create
+      tags:
+      - seat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeatRead'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SeatRead'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SeatRead'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeatRead'
+          description: ''
+  /seat/by_auditorium/:
+    get:
+      operationId: seat_by_auditorium_retrieve
+      tags:
+      - seat
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeatRead'
+          description: ''
+  /theater/theater-info/:
+    get:
+      operationId: theater_theater_info_list
+      tags:
+      - theater
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Theater'
+          description: ''
+    post:
+      operationId: theater_theater_info_create
+      tags:
+      - theater
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Theater'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Theater'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Theater'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theater'
+          description: ''
+  /theater/theater-info/{id}/:
+    get:
+      operationId: theater_theater_info_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this theater.
+        required: true
+      tags:
+      - theater
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theater'
+          description: ''
+    put:
+      operationId: theater_theater_info_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this theater.
+        required: true
+      tags:
+      - theater
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Theater'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Theater'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Theater'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theater'
+          description: ''
+    patch:
+      operationId: theater_theater_info_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this theater.
+        required: true
+      tags:
+      - theater
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTheater'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTheater'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTheater'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theater'
+          description: ''
+    delete:
+      operationId: theater_theater_info_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this theater.
+        required: true
+      tags:
+      - theater
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Actor:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 20
+      required:
+      - id
+      - name
+    AuditoriumRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 10
+        theater:
+          allOf:
+          - $ref: '#/components/schemas/Theater'
+          readOnly: true
+      required:
+      - id
+      - name
+      - theater
+    AuditoriumWrite:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 10
+        theater:
+          type: integer
+      required:
+      - id
+      - name
+      - theater
+    Booking:
+      type: object
+      properties:
+        booking_id:
+          type: string
+          format: uuid
+          readOnly: true
+        seat:
+          type: array
+          items:
+            type: integer
+        booking_status:
+          $ref: '#/components/schemas/BookingStatusEnum'
+        total_money:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+        movie_showing:
+          type: integer
+      required:
+      - booking_id
+      - created_at
+      - movie_showing
+      - seat
+      - total_money
+      - updated_at
+      - user
+    BookingStatusEnum:
+      enum:
+      - Pending
+      - Confirmed
+      - Cancelled
+      type: string
+      description: |-
+        * `Pending` - Pending
+        * `Confirmed` - Confirmed
+        * `Cancelled` - Cancelled
+    CustomAdminUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - date_joined
+      - email
+      - id
+      - password
+    CustomUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 20
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - date_joined
+      - email
+      - id
+      - password
+    GatewayTypeEnum:
+      enum:
+      - PAYPAL
+      - SSLCOMMERZ
+      - AMARPAY
+      - SHURJOPAY
+      type: string
+      description: |-
+        * `PAYPAL` - Paypal
+        * `SSLCOMMERZ` - Sslcommerz
+        * `AMARPAY` - Amarpay
+        * `SHURJOPAY` - Shurjopay
+    GenreEnum:
+      enum:
+      - ACTION
+      - ADVENTURE
+      - ANIMATION
+      - COMEDY
+      - CRIME
+      - DOCUMENTARY
+      - DRAMA
+      - FANTASY
+      - HISTORICAL
+      - HORROR
+      - MUSICAL
+      - MYSTERY
+      - ROMANCE
+      - SCIFI
+      - THRILLER
+      - WAR
+      - WESTERN
+      - FAMILY
+      - BIOGRAPHY
+      - SPORTS
+      type: string
+      description: |-
+        * `ACTION` - Action
+        * `ADVENTURE` - Adventure
+        * `ANIMATION` - Animation
+        * `COMEDY` - Comedy
+        * `CRIME` - Crime
+        * `DOCUMENTARY` - Documentary
+        * `DRAMA` - Drama
+        * `FANTASY` - Fantasy
+        * `HISTORICAL` - Historical
+        * `HORROR` - Horror
+        * `MUSICAL` - Musical
+        * `MYSTERY` - Mystery
+        * `ROMANCE` - Romance
+        * `SCIFI` - Sci-Fi
+        * `THRILLER` - Thriller
+        * `WAR` - War
+        * `WESTERN` - Western
+        * `FAMILY` - Family
+        * `BIOGRAPHY` - Biography
+        * `SPORTS` - Sports
+    LanguageEnum:
+      enum:
+      - BANGLA
+      - ENGLISH
+      - HINDI
+      type: string
+      description: |-
+        * `BANGLA` - Bangla
+        * `ENGLISH` - English
+        * `HINDI` - Hindi
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+        genre:
+          $ref: '#/components/schemas/GenreEnum'
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        actor:
+          type: array
+          items:
+            type: integer
+        poster:
+          type: string
+          format: uri
+        release_date:
+          type: string
+          format: date
+      required:
+      - actor
+      - description
+      - genre
+      - id
+      - language
+      - poster
+      - release_date
+      - title
+    MovieShowingRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        auditorium:
+          allOf:
+          - $ref: '#/components/schemas/AuditoriumRead'
+          readOnly: true
+        movie:
+          allOf:
+          - $ref: '#/components/schemas/Movie'
+          readOnly: true
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+          format: time
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+      required:
+      - auditorium
+      - date
+      - id
+      - movie
+      - price
+      - time
+    MovieShowingWrite:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        auditorium:
+          type: integer
+        movie:
+          type: integer
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+          format: time
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+      required:
+      - auditorium
+      - date
+      - id
+      - movie
+      - price
+      - time
+    PatchedActor:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 20
+    PatchedAuditoriumWrite:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 10
+        theater:
+          type: integer
+    PatchedBooking:
+      type: object
+      properties:
+        booking_id:
+          type: string
+          format: uuid
+          readOnly: true
+        seat:
+          type: array
+          items:
+            type: integer
+        booking_status:
+          $ref: '#/components/schemas/BookingStatusEnum'
+        total_money:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+        movie_showing:
+          type: integer
+    PatchedCustomAdminUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedCustomUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 20
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedMovie:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+        genre:
+          $ref: '#/components/schemas/GenreEnum'
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        actor:
+          type: array
+          items:
+            type: integer
+        poster:
+          type: string
+          format: uri
+        release_date:
+          type: string
+          format: date
+    PatchedMovieShowingWrite:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        auditorium:
+          type: integer
+        movie:
+          type: integer
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+          format: time
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+    PatchedSeatUpdate:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+        seat_type:
+          $ref: '#/components/schemas/SeatTypeEnum'
+    PatchedTheater:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        location:
+          type: string
+          maxLength: 200
+    Payament:
+      type: object
+      properties:
+        payment_id:
+          type: string
+          format: uuid
+        gateway_type:
+          $ref: '#/components/schemas/GatewayTypeEnum'
+        gateway_transaction_id:
+          type: string
+          nullable: true
+          maxLength: 255
+        gateway_response:
+          nullable: true
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        payment_status:
+          $ref: '#/components/schemas/PaymentStatusEnum'
+        status_reason:
+          type: string
+          nullable: true
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        booking:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - amount
+      - created_at
+      - gateway_type
+      - updated_at
+    PaymentCreate:
+      type: object
+      properties:
+        gateway_type:
+          allOf:
+          - $ref: '#/components/schemas/GatewayTypeEnum'
+          writeOnly: true
+        booking:
+          type: string
+          format: uuid
+          writeOnly: true
+      required:
+      - booking
+      - gateway_type
+    PaymentStatusEnum:
+      enum:
+      - PAID
+      - UNPAID
+      - PENDING
+      - FAILED
+      - CANCELLED
+      type: string
+      description: |-
+        * `PAID` - Paid
+        * `UNPAID` - Unpaid
+        * `PENDING` - Payment_Pending
+        * `FAILED` - Failed
+        * `CANCELLED` - Cancelled
+    RoleEnum:
+      enum:
+      - ADMIN
+      - REGULAR_USER
+      type: string
+      description: |-
+        * `ADMIN` - Admin
+        * `REGULAR_USER` - Regular_User
+    RowNumberEnum:
+      enum:
+      - A
+      - B
+      - C
+      - D
+      - E
+      - F
+      - G
+      - H
+      - I
+      - J
+      type: string
+      description: |-
+        * `A` - A
+        * `B` - B
+        * `C` - C
+        * `D` - D
+        * `E` - E
+        * `F` - F
+        * `G` - G
+        * `H` - H
+        * `I` - I
+        * `J` - J
+    SeatNumberEnum:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      type: integer
+      description: |-
+        * `1` - 1
+        * `2` - 2
+        * `3` - 3
+        * `4` - 4
+        * `5` - 5
+        * `6` - 6
+        * `7` - 7
+        * `8` - 8
+        * `9` - 9
+        * `10` - 10
+    SeatRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        row_number:
+          $ref: '#/components/schemas/RowNumberEnum'
+        seat_number:
+          allOf:
+          - $ref: '#/components/schemas/SeatNumberEnum'
+          minimum: -9223372036854775808
+          maximum: 9223372036854775807
+        seat_type:
+          $ref: '#/components/schemas/SeatTypeEnum'
+        is_active:
+          type: boolean
+        auditorium:
+          allOf:
+          - $ref: '#/components/schemas/AuditoriumRead'
+          readOnly: true
+      required:
+      - auditorium
+      - id
+      - row_number
+      - seat_number
+      - seat_type
+    SeatTypeEnum:
+      enum:
+      - regular
+      - premium
+      - vip
+      - recliner
+      type: string
+      description: |-
+        * `regular` - Regular
+        * `premium` - Premium
+        * `vip` - VIP
+        * `recliner` - Recliner
+    SeatUpdate:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+        seat_type:
+          $ref: '#/components/schemas/SeatTypeEnum'
+      required:
+      - seat_type
+    Theater:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        location:
+          type: string
+          maxLength: 200
+      required:
+      - id
+      - location
+      - name
+    TokenObtainPair:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - email
+      - password
+      - refresh
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

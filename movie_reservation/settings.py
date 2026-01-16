@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "silk",
     "django_filters",
+    "drf_spectacular",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -144,7 +145,8 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
-    ]
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 CACHES = {
@@ -155,6 +157,16 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
     }
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Movie Reservation APIs",
+    "DESCRIPTION": None,
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_SETTINGS": {
+        "persistAuthorization": True,
+    },
 }
 
 
