@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "silk",
     "django_filters",
     "drf_spectacular",
+    "django_celery_results",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -152,7 +153,7 @@ REST_FRAMEWORK = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",  # Use the appropriate Redis server URL
+        "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
@@ -168,6 +169,14 @@ SPECTACULAR_SETTINGS = {
         "persistAuthorization": True,
     },
 }
+
+
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/1"
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TIMEZONE = "Asia/Dhaka"
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 
 EMAIL_BACKEND = env("EMAIL_BACKEND")
