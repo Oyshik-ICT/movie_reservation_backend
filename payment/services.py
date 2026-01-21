@@ -3,6 +3,8 @@ from payment.choice import GatewayType
 from payment.factory import PaymentGatewayFactory
 from payment.models import Payment
 
+from .tasks import send_booking_mail
+
 
 class PaymentService:
     def __init__(self, gateway_type):
@@ -67,6 +69,7 @@ class PaymentService:
 
         if status == "PAID":
             payment.booking.confirm
+            send_booking_mail.delay()
         elif status in ["FAILED", "CANCELLED"]:
             payment.booking.cancel
 
