@@ -69,7 +69,9 @@ class PaymentService:
 
         if status == "PAID":
             payment.booking.confirm
-            send_booking_mail.delay()
+            send_booking_mail.delay(
+                payment.booking.user.email, payment.booking.movie_showing.movie.title
+            )
         elif status in ["FAILED", "CANCELLED"]:
             payment.booking.cancel
 
