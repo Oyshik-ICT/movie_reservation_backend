@@ -1,15 +1,3 @@
-import hashlib
-import secrets
-import time
-from datetime import datetime, timedelta
-
-from django.conf import settings
-from django.contrib.auth.tokens import default_token_generator
-from django.core.cache import cache
-from django.core.mail import send_mail
-from django.shortcuts import render
-from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.exceptions import PermissionDenied
@@ -23,7 +11,6 @@ from .serializers import (
     CustomAdminUserSerializer,
     CustomUserSerializer,
     ForgetPasswordSerializer,
-    ResetPasswordSerializer,
 )
 
 

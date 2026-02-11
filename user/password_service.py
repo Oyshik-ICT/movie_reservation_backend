@@ -66,7 +66,7 @@ class PasswordResetService:
     @classmethod
     def initiate_password_reset(cls, email):
         start_time = time.time()
-        # Standard response message (no user enumeration)
+
         STANDARD_MESSAGE = "If an account with this email exists, you will receive a password reset code shortly."
         ERROR_MESSAGE = (
             "We're experiencing technical difficulties. Please try again later."
@@ -74,10 +74,6 @@ class PasswordResetService:
         RATE_LIMIT_MESSAGE = "Too many reset requests. Please try again later."
 
         try:
-            # Always perform the same operations regardless of user existence
-            # This prevents timing attacks and user enumeration
-
-            # Check rate limiting per email
             if not PasswordResetService.check_rate_limit_per_email(email):
                 cls._ensure_consistent_timing(start_time)
                 return False, RATE_LIMIT_MESSAGE, "rate_limit"
