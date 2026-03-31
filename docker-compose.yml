@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - movie_reservation/.env
+    ports:
+      - 5432:5432
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+
+  web:
+    build: .
+    command: gunicorn movie_reservation.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    volumes:
+      - .:/movie_reservation_app
+      - static_volume:/movie_reservation_app/static
+      - media_volume:/movie_reservation_app/media
+    ports:
+      - 8000:8000
+    env_file:
+      - movie_reservation/.env
+    depends_on:
+      - db
+      - redis
+    
+  celery:
+    build: .
+    command: celery -A movie_reservation worker -l info --pool=solo
+    volumes:
+      - .:/movie_reservation_app
+    env_file:
+      - movie_reservation/.env
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
