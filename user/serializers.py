@@ -53,16 +53,16 @@ class CustomUserSerializer(BaseCustomSerializer):
             "date_joined": {"read_only": True},
         }
 
-    def validate_phone_number(self, value):
-        url = f"https://lookups.twilio.com/v2/PhoneNumbers/{value}"
-        response = requests.get(
-            url=url,
-            auth=HTTPBasicAuth(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN),
-        ).json()
-        if not response.get("valid"):
-            raise serializers.ValidationError("Phone number is not Valid")
+    # def validate_phone_number(self, value):
+    #     url = f"https://lookups.twilio.com/v2/PhoneNumbers/{value}"
+    #     response = requests.get(
+    #         url=url,
+    #         auth=HTTPBasicAuth(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN),
+    #     ).json()
+    #     if not response.get("valid"):
+    #         raise serializers.ValidationError("Phone number is not Valid")
 
-        return value
+    #     return value
 
 
 class CustomAdminUserSerializer(BaseCustomSerializer):

@@ -1,11 +1,22 @@
-from .models import Theater, Auditorium, Seat, MovieShowing
-from .serializers import TheaterSerializer, AuditoriumReadSerializer, AuditoriumWriteSerializer, SeatReadSerializer, SeatUpdateSerializer, SeatBulkCreateSerializer, MovieShowingReadSerializer, MovieShowingWriteSerializer
-from rest_framework import viewsets
-from rest_framework.permissions import AllowAny
-from user.permissions import IsAdmin
-from rest_framework.response import Response
-from rest_framework import status
+from drf_spectacular.utils import extend_schema
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from user.permissions import IsAdmin
+
+from .models import Auditorium, MovieShowing, Seat, Theater
+from .serializers import (
+    AuditoriumReadSerializer,
+    AuditoriumWriteSerializer,
+    MovieShowingReadSerializer,
+    MovieShowingWriteSerializer,
+    SeatBulkCreateSerializer,
+    SeatReadSerializer,
+    SeatUpdateSerializer,
+    TheaterSerializer,
+)
+
 
 class TheaterViewset(viewsets.ModelViewSet):
     queryset = Theater.objects.all()
@@ -18,16 +29,17 @@ class TheaterViewset(viewsets.ModelViewSet):
             self.permission_classes = [IsAdmin]
 
         return super().get_permissions()
-    
+
+
 class AuditoriumViewset(viewsets.ModelViewSet):
     queryset = Auditorium.objects.select_related("theater")
-    
+
     def get_serializer_class(self):
         if self.action in ["list", "retrieve"]:
             return AuditoriumReadSerializer
-        
+
         return AuditoriumWriteSerializer
-    
+
     def get_permissions(self):
         if self.action in ["list", "retrieve"]:
             self.permission_classes = [AllowAny]
@@ -35,18 +47,19 @@ class AuditoriumViewset(viewsets.ModelViewSet):
             self.permission_classes = [IsAdmin]
 
         return super().get_permissions()
-    
+
+
 class SeatViewset(viewsets.ModelViewSet):
     queryset = Seat.objects.select_related("auditorium__theater")
-    
+
     def get_serializer_class(self):
         if self.action in ["list", "retrieve"]:
             return SeatReadSerializer
         elif self.action in ["update", "partial_update"]:
             return SeatUpdateSerializer
-        
+
         return SeatReadSerializer
-    
+
     def get_permissions(self):
         if self.action in ["list", "retrieve"]:
             self.permission_classes = [AllowAny]
@@ -54,65 +67,72 @@ class SeatViewset(viewsets.ModelViewSet):
             self.permission_classes = [IsAdmin]
 
         return super().get_permissions()
-    
+
     def create(self, request, *args, **kwargs):
         return Response(
-            {"error": "Individual seat creation not allowed. Use bulk_create endpoint."},
-            status=status.HTTP_405_METHOD_NOT_ALLOWED
+            {
+                "error": "Individual seat creation not allowed. Use bulk_create endpoint."
+            },
+            status=status.HTTP_405_METHOD_NOT_ALLOWED,
         )
-    
+
     def destroy(self, request, *args, **kwargs):
         seat = self.get_object()
         seat.is_active = False
-        seat.save(update_fields=['is_active'])
+        seat.save(update_fields=["is_active"])
         return Response(
             {"message": "Seat deactivate successfully"},
-            status=status.HTTP_204_NO_CONTENT
+            status=status.HTTP_204_NO_CONTENT,
         )
-    
-    @action(detail=False, methods=['POST'], permission_classes=[IsAdmin])
+
+    @extend_schema(
+        request=SeatBulkCreateSerializer,
+    )
+    @action(detail=False, methods=["POST"], permission_classes=[IsAdmin])
     def bulk_create(self, request):
         serializer = SeatBulkCreateSerializer(data=request.data)
         if serializer.is_valid():
             seat = serializer.create(serializer.validated_data)
 
             return Response(
-                SeatReadSerializer(seat, many=True).data,
-                status=status.HTTP_201_CREATED
+                SeatReadSerializer(seat, many=True).data, status=status.HTTP_201_CREATED
             )
-        
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=['GET'])
+    @action(detail=False, methods=["GET"])
     def by_auditorium(self, request):
         auditorium_id = request.query_params.get("auditorium_id")
 
         if not auditorium_id:
             return Response(
                 {"error": "Auditorium id is required"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
-        
+
         if not Auditorium.objects.filter(id=auditorium_id).exists():
             return Response(
                 {"error": "Auditorium id is not valid"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
-        
+
         seats = self.get_queryset().filter(auditorium=auditorium_id)
         return Response(SeatReadSerializer(seats, many=True).data)
-    
+
+
 class MovieShowingViewset(viewsets.ModelViewSet):
-    queryset = MovieShowing.objects.select_related("auditorium__theater", "movie").prefetch_related("movie__actor")
-    
+    queryset = MovieShowing.objects.select_related(
+        "auditorium__theater", "movie"
+    ).prefetch_related("movie__actor")
+
     def get_serializer_class(self):
-        if self.action in ['create', 'update', 'partial_update']:
+        if self.action in ["create", "update", "partial_update"]:
             return MovieShowingWriteSerializer
-        
+
         return MovieShowingReadSerializer
-        
+
     def get_permissions(self):
-        if self.action in ['list', 'retrieve']:
+        if self.action in ["list", "retrieve"]:
             self.permission_classes = [AllowAny]
         else:
             self.permission_classes = [IsAdmin]
