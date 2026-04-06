@@ -27,7 +27,6 @@ A comprehensive movie ticket booking backend system built with Django REST Frame
 - OWASP-compliant password reset flow
 - Rate limiting on password reset attempts
 - Timing attack prevention
-- Phone number validation via Twilio API
 - Secure payment processing
 
 ###  Performance Optimizations
@@ -42,20 +41,23 @@ A comprehensive movie ticket booking backend system built with Django REST Frame
 - **Framework**: Django 5.2.4
 - **API**: Django REST Framework 3.16.0
 - **Authentication**: JWT (djangorestframework-simplejwt)
-- **Database**: SQLite (can be switched to PostgreSQL)
+- **Database**: PostgreSQL (Docker) / SQLite (Local dev)
 - **Caching**: Redis
 - **Task Queue**: Celery 5.6.2
 - **Payment Gateway**: SSLCommerz
 - **Email**: SMTP
 - **API Documentation**: drf-spectacular (Swagger/OpenAPI)
-- **Phone Validation**: Twilio API
 
-##  Prerequisites
+## 📋 Prerequisites
 
-Before you begin, ensure you have the following installed:
+**For Local Development:**
 - Python 3.10 or higher
 - Redis Server
 - pip (Python package manager)
+
+**For Docker (Recommended):**
+- Docker Desktop
+- Docker Compose
 
 ##  Installation Guide
 
@@ -86,9 +88,10 @@ pip install -r requirements.txt
 ### 4. Environment Configuration
 
 Create a `.env` file in the `movie_reservation` directory (same level as `settings.py`):
-
 ```env
-# Email Configuration (Gmail example)
+# ============================================
+# Email Configuration
+# ============================================
 EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
@@ -97,23 +100,41 @@ EMAIL_HOST_USER=your-email@gmail.com
 EMAIL_HOST_PASSWORD=your-app-password
 DEFAULT_FROM_EMAIL=noreply@moviereservation.com
 
+# ============================================
+# Database (Docker uses PostgreSQL)
+# ============================================
+POSTGRES_DB=movie_reservation
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_secure_password_123
+
+# Database URL (automatically used in Docker)
+DATABASE_URL=postgresql://postgres:your_secure_password_123@db:5432/movie_reservation
+
+# ============================================
+# Redis & Celery
+# ============================================
+REDIS_URL=redis://redis:6379/0
+CELERY_BROKER_URL=redis://redis:6379/0
+CELERY_RESULT_BACKEND=django-db
+
+# ============================================
 # SSLCommerz Payment Gateway
+# ============================================
 SSLCOMMERZ_ID=your-store-id
 SSLCOMMERZ_PASS=your-store-password
 SSLCOMMERZ_IS_SANDBOX=True
 
-# Twilio Phone Validation
-TWILIO_ACCOUNT_SID=your-twilio-sid
-TWILIO_AUTH_TOKEN=your-twilio-token
 
+# ============================================
 # Backend URL (for payment callbacks)
-BACKEND_URL=[You can use ngrok and paste the link here]
+# ============================================
+BACKEND_URL=http://localhost:8000
+# For testing real payments, use ngrok: https://your-id.ngrok-free.app
 ```
 
 **Note**: 
 - For Gmail, use [App Passwords](https://support.google.com/accounts/answer/185833)
 - Get SSLCommerz credentials from [SSLCommerz](https://sslcommerz.com/)
-- Get Twilio credentials from [Twilio Console](https://console.twilio.com/)
 
 ### 5. Database Setup
 ```bash
@@ -157,6 +178,68 @@ python manage.py runserver
 ```
 
 The server will start at `http://localhost:8000/`
+
+## 🐳 Running with Docker (Recommended)
+
+Docker simplifies setup by bundling all dependencies (PostgreSQL, Redis, Celery) into containers.
+
+### Quick Start
+```bash
+# 1. Clone repository
+git clone https://github.com/Oyshik-ICT/movie_reservation_backend.git
+cd movie_reservation_backend
+
+# 2. Create a `.env` file in the `movie_reservation` directory (same level as `settings.py`) and configure it like before as local host
+
+# 3. Build and start all services
+docker-compose up --build
+
+# 4. In a new terminal, run migrations
+docker-compose exec web python manage.py migrate
+
+# 5. Create admin user
+docker-compose exec web python manage.py createsuperuser
+
+# 6. Access application
+# API Docs: http://localhost:8000/api/docs/
+# Admin: http://localhost:8000/admin/
+```
+
+### Docker Commands Reference
+```bash
+# Start services in background
+docker-compose up -d
+
+# View logs
+docker-compose logs -f web          # Django logs
+docker-compose logs -f celery       # Celery logs
+
+# Stop services
+docker-compose down
+
+# Restart after code changes
+docker-compose restart web
+
+# Run Django commands
+docker-compose exec web python manage.py <command>
+
+# Access database
+docker-compose exec db psql -U postgres -d movie_reservation
+
+# Clean restart (removes volumes)
+docker-compose down -v
+docker-compose up --build
+```
+
+### Docker Architecture
+
+The application runs in 4 containers:
+- **db**: PostgreSQL database (port 5432)
+- **redis**: Redis cache & Celery broker (port 6379)  
+- **web**: Django API server (port 8000)
+- **celery**: Background task worker
+
+---
 
 ##  API Documentation
 
@@ -412,9 +495,7 @@ Then login at: http://localhost:8000/admin/
 | `SSLCOMMERZ_ID` | Store ID | `test123` |
 | `SSLCOMMERZ_PASS` | Store password | `testpass` |
 | `SSLCOMMERZ_IS_SANDBOX` | Sandbox mode | `True` |
-| `TWILIO_ACCOUNT_SID` | Twilio account SID | `ACxxxxxxxx` |
-| `TWILIO_AUTH_TOKEN` | Twilio auth token | `your-token` |
-| `BACKEND_URL` | Backend URL | `http://localhost:8000` |
+| `BACKEND_URL` | Backend URL (for payment callbacks) | `http://localhost:8000` (use ngrok for testing payments) |
 
 
 ##  Contributing
