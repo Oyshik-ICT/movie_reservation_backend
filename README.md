@@ -454,7 +454,6 @@ Then login at: http://localhost:8000/admin/
 ### Security Measures
 - JWT token expiration
 - Password complexity validation
-- Phone number verification
 - Rate limiting on password reset
 - Timing attack prevention
 - Database row locking for concurrent bookings
