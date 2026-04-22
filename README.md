@@ -107,7 +107,8 @@ POSTGRES_DB=movie_reservation
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=your_secure_password_123
 
-# Database URL (automatically used in Docker)
+# Database URL (used automatically in Docker)
+# If you are not using Docker, comment out this line
 DATABASE_URL=postgresql://postgres:your_secure_password_123@db:5432/movie_reservation
 
 # ============================================
