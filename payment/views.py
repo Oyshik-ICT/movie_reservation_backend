@@ -48,6 +48,7 @@ class SslcommerzIPNAPIView(APIView):
                 payment, "CANCELLED", request.data.get("error")
             )
         else:
+            print("Enter in the ipn")
             payment_service.verify_and_confirm_payment(
                 payment, {"val_id": request.data.get("val_id")}
             )
