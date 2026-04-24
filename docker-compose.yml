@@ -46,7 +46,7 @@ services:
       - static_volume:/movie_reservation_app/static:ro
       - media_volume:/movie_reservation_app/media:ro
     ports:
-      - 80:80
+      - 81:81
     depends_on:
       - web
 
