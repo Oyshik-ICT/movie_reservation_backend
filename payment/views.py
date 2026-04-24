@@ -32,6 +32,7 @@ class PaymentCreateAPIView(CreateAPIView):
 
 class SslcommerzIPNAPIView(APIView):
     def post(self, request, *args, **kwargs):
+        print("Enter in the ipn main")
         try:
             payment = Payment.objects.get(payment_id=kwargs["payment_id"])
         except Payment.DoesNotExist:
