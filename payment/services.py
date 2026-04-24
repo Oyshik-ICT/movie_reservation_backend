@@ -55,7 +55,6 @@ class PaymentService:
 
     def verify_and_confirm_payment(self, payment, data):
         try:
-            print("Enter verify_and_confirm_payment")
             response = self.gateway.verify(data)
             self.payment_status_update(payment, "PAID")
 

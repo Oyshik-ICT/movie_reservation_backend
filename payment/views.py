@@ -32,7 +32,6 @@ class PaymentCreateAPIView(CreateAPIView):
 
 class SslcommerzIPNAPIView(APIView):
     def post(self, request, *args, **kwargs):
-        print("Enter in the ipn main")
         try:
             payment = Payment.objects.get(payment_id=kwargs["payment_id"])
         except Payment.DoesNotExist:
@@ -49,7 +48,6 @@ class SslcommerzIPNAPIView(APIView):
                 payment, "CANCELLED", request.data.get("error")
             )
         else:
-            print("Enter in the ipn")
             payment_service.verify_and_confirm_payment(
                 payment, {"val_id": request.data.get("val_id")}
             )

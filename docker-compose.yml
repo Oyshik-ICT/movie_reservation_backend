@@ -15,7 +15,7 @@ services:
 
   web:
     build: .
-    command: gunicorn movie_reservation.wsgi:application --bind 0.0.0.0:8001 --workers 2 --access-logfile - --error-logfile - --capture-output --log-level info
+    command: gunicorn movie_reservation.wsgi:application --bind 0.0.0.0:8001 --workers 3
     volumes:
       - .:/movie_reservation_app
       - static_volume:/movie_reservation_app/static
