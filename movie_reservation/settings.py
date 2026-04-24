@@ -30,7 +30,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = ["https://hwa-balmiest-sixta.ngrok-free.dev"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://hwa-balmiest-sixta.ngrok-free.dev",
+    "http://109.199.102.196:81",
+]
 
 
 # Application definition
